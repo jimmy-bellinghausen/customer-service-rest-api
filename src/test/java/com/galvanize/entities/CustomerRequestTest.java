@@ -5,12 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.internal.verification.Times;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 public class CustomerRequestTest {
@@ -31,5 +33,17 @@ public class CustomerRequestTest {
         customer.addNote(testNote);
 
         assertEquals(expectedNotes, customer.getNotes());
+    }
+
+    @Test
+    public void failedToAddNote(){
+        String testDescription = "You added this note!";
+        Note testNote = new Note(testDescription);
+        List<Note> expectedNotes = new ArrayList<>();
+        expectedNotes.add(testNote);
+
+        customer.addNote(new Note("Not the test note."));
+
+        assertFalse(expectedNotes==customer.getNotes());
     }
 }
