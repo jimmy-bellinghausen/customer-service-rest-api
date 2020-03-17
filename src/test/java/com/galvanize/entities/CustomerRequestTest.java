@@ -7,11 +7,29 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class CustomerRequestTest {
+    CustomerRequest customer;
+
     @BeforeEach
     public void resetCustomer() {
-        CustomerRequest custoemr = new CustomerRequest(Timestamp.valueOf(String.valueOf(LocalDate.now())), "Test Customer", "123 Some Address Lane", "+1 234-567-890", "This is a test customer request.");
+        customer = new CustomerRequest(Timestamp.valueOf(String.valueOf(LocalDate.now())), "Test Customer", "123 Some Address Lane", "+1 234-567-890", "This is a test customer request.");
+    }
+
+    @Test
+    public void addNote(){
+        String testDescription = "You added this note!";
+        Note testNote = new Note(testDescription);
+        List<Note> expectedNotes = new ArrayList<>();
+        expectedNotes.add(testNote);
+
+        customer.addNote(testNote);
+
+        assertEquals(expectedNotes, customer.getNotes());
     }
 }

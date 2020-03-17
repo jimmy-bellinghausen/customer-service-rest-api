@@ -16,7 +16,7 @@ public class CustomerRequest {
     private String technician;
     private Timestamp appointmentDateTime;
     private String status;
-    private List<String> notes;
+    private List<Note> notes;
 
     public CustomerRequest(){}
 
@@ -31,7 +31,7 @@ public class CustomerRequest {
         notes = new ArrayList<>();
     }
 
-    public CustomerRequest(int requestNumber, Timestamp requestDateTime, String customerName, String customerAddress, String phoneNumber, String description, String technician, String status, List<String> notes) {
+    public CustomerRequest(int requestNumber, Timestamp requestDateTime, String customerName, String customerAddress, String phoneNumber, String description, String technician, String status, List<Note> notes) {
         this.requestNumber = requestNumber;
         this.requestDateTime = requestDateTime;
         this.customerName = customerName;
@@ -43,7 +43,7 @@ public class CustomerRequest {
         this.notes = notes;
     }
 
-    public CustomerRequest(int requestNumber, Timestamp requestDateTime, String customerName, String customerAddress, String phoneNumber, String description, String technician, Timestamp appointmentDateTime, String status, List<String> notes) {
+    public CustomerRequest(int requestNumber, Timestamp requestDateTime, String customerName, String customerAddress, String phoneNumber, String description, String technician, Timestamp appointmentDateTime, String status, List<Note> notes) {
         this.requestNumber = requestNumber;
         this.requestDateTime = requestDateTime;
         this.customerName = customerName;
@@ -128,11 +128,11 @@ public class CustomerRequest {
         this.status = status;
     }
 
-    public List<String> getNotes() {
+    public List<Note> getNotes() {
         return notes;
     }
 
-    public void setNotes(List<String> notes) {
+    public void setNotes(List<Note> notes) {
         this.notes = notes;
     }
 
@@ -156,5 +156,9 @@ public class CustomerRequest {
     @Override
     public int hashCode() {
         return Objects.hash(getRequestNumber(), getRequestDateTime(), getCustomerName(), getCustomerAddress(), getPhoneNumber(), getDescription(), getTechnician(), getAppointmentDateTime(), getStatus(), getNotes());
+    }
+
+    public void addNote(Note note) {
+        this.getNotes().add(note);
     }
 }
