@@ -16,34 +16,5 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 public class CustomerRequestTest {
-    CustomerRequest customer;
 
-    @BeforeEach
-    public void resetCustomer() {
-        customer = new CustomerRequest(Timestamp.valueOf(LocalDateTime.now()), "Test Customer", "123 Some Address Lane", "+1 234-567-890", "This is a test customer request.");
-    }
-
-    @Test
-    public void addNote(){
-        String testDescription = "You added this note!";
-        Note testNote = new Note(testDescription);
-        List<Note> expectedNotes = new ArrayList<>();
-        expectedNotes.add(testNote);
-
-        customer.addNote(testNote);
-
-        assertEquals(expectedNotes, customer.getNotes());
-    }
-
-    @Test
-    public void failedToAddNote(){
-        String testDescription = "You added this note!";
-        Note testNote = new Note(testDescription);
-        List<Note> expectedNotes = new ArrayList<>();
-        expectedNotes.add(testNote);
-
-        customer.addNote(new Note("Not the test note."));
-
-        assertFalse(expectedNotes==customer.getNotes());
-    }
 }

@@ -1,22 +1,35 @@
 package com.galvanize.entities;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "customerRequests")
 public class CustomerRequest {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "requestNumber")
     private int requestNumber;
+    @Column(name = "requestDateTime")
     private Timestamp requestDateTime;
+    @Column(name = "customerName")
     private String customerName;
+    @Column(name = "customerAddress")
     private String customerAddress;
+    @Column(name = "phoneNumber")
     private String phoneNumber;
+    @Column(name = "descpiption")
     private String description;
+    @Column(name = "technician")
     private String technician;
+    @Column(name = "appointmentDateTime")
     private Timestamp appointmentDateTime;
+    @Column(name = "status")
     private String status;
-    private List<Note> notes;
 
     public CustomerRequest(){}
 
@@ -28,7 +41,6 @@ public class CustomerRequest {
         this.description = description;
         technician = "UNASSIGNED";
         status = "PENDING";
-        notes = new ArrayList<>();
     }
 
     public CustomerRequest(int requestNumber, Timestamp requestDateTime, String customerName, String customerAddress, String phoneNumber, String description, String technician, String status, List<Note> notes) {
@@ -40,7 +52,6 @@ public class CustomerRequest {
         this.description = description;
         this.technician = technician;
         this.status = status;
-        this.notes = notes;
     }
 
     public CustomerRequest(int requestNumber, Timestamp requestDateTime, String customerName, String customerAddress, String phoneNumber, String description, String technician, Timestamp appointmentDateTime, String status, List<Note> notes) {
@@ -53,7 +64,6 @@ public class CustomerRequest {
         this.technician = technician;
         this.appointmentDateTime = appointmentDateTime;
         this.status = status;
-        this.notes = notes;
     }
 
     public int getRequestNumber() {
@@ -128,13 +138,6 @@ public class CustomerRequest {
         this.status = status;
     }
 
-    public List<Note> getNotes() {
-        return notes;
-    }
-
-    public void setNotes(List<Note> notes) {
-        this.notes = notes;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -149,16 +152,11 @@ public class CustomerRequest {
                 Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getTechnician(), that.getTechnician()) &&
                 Objects.equals(getAppointmentDateTime(), that.getAppointmentDateTime()) &&
-                Objects.equals(getStatus(), that.getStatus()) &&
-                Objects.equals(getNotes(), that.getNotes());
+                Objects.equals(getStatus(), that.getStatus());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRequestNumber(), getRequestDateTime(), getCustomerName(), getCustomerAddress(), getPhoneNumber(), getDescription(), getTechnician(), getAppointmentDateTime(), getStatus(), getNotes());
-    }
-
-    public void addNote(Note note) {
-        this.getNotes().add(note);
+        return Objects.hash(getRequestNumber(), getRequestDateTime(), getCustomerName(), getCustomerAddress(), getPhoneNumber(), getDescription(), getTechnician(), getAppointmentDateTime(), getStatus());
     }
 }

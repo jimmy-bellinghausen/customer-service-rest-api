@@ -9,7 +9,6 @@ CREATE TABLE customerRequests (
     technician    VARCHAR(50) NOT NULL,
     appointmentDateTime    TIMESTAMP,
     status    VARCHAR(50) NOT NULL,
-    notes TABLE,
     PRIMARY KEY (requestNumber)
 );
 DROP TABLE IF EXISTS notes;
@@ -17,6 +16,6 @@ CREATE TABLE notes (
     noteKey           INTEGER NOT NULL AUTO_INCREMENT,
     customerRequestNumber INTEGER  NOT NULL,
     dateTime TIMESTAMP NOT NULL,
-    note   VARCHAR(MAX) NOT NULL,
+    note   VARCHAR(200) NOT NULL,
     PRIMARY KEY (noteKey)
 );
