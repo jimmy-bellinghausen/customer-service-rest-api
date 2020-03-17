@@ -6,7 +6,7 @@ import org.mockito.internal.verification.Times;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class CustomerRequestTest {
 
     @BeforeEach
     public void resetCustomer() {
-        customer = new CustomerRequest(Timestamp.valueOf(String.valueOf(LocalDate.now())), "Test Customer", "123 Some Address Lane", "+1 234-567-890", "This is a test customer request.");
+        customer = new CustomerRequest(Timestamp.valueOf(LocalDateTime.now()), "Test Customer", "123 Some Address Lane", "+1 234-567-890", "This is a test customer request.");
     }
 
     @Test

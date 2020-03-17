@@ -1,7 +1,7 @@
 package com.galvanize.entities;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Note {
     Timestamp timeOfNote;
@@ -10,7 +10,7 @@ public class Note {
     public Note(){};
 
     public Note(String noteDescription) {
-        this.timeOfNote = Timestamp.valueOf(String.valueOf(LocalDate.now()));
+        this.timeOfNote = Timestamp.valueOf(LocalDateTime.now());
         this.noteDescription = noteDescription;
     }
 
