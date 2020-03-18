@@ -8,5 +8,6 @@ import javax.persistence.Id;
 
 @Repository
 public interface JpaCustomerDao extends JpaRepository<CustomerRequest, Id>{
+    CustomerRequest save(CustomerRequest customerRequest);
 
 }
