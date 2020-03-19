@@ -33,6 +33,18 @@ public class CustomerRequest {
 
     public CustomerRequest(){}
 
+    public CustomerRequest(CustomerRequest customerRequest){
+        this.requestNumber = customerRequest.getRequestNumber();
+        this.requestDateTime = customerRequest.getRequestDateTime();
+        this.customerName = customerRequest.getCustomerName();
+        this.customerAddress = customerRequest.getCustomerAddress();
+        this.phoneNumber = customerRequest.getPhoneNumber();
+        this.description = customerRequest.getDescription();
+        this.technician = customerRequest.getTechnician();
+        this.appointmentDateTime = customerRequest.getAppointmentDateTime();
+        this.status = customerRequest.getStatus();
+    }
+
     public CustomerRequest(Timestamp requestDateTime, String customerName, String customerAddress, String phoneNumber, String description) {
         this.requestDateTime = requestDateTime;
         this.customerName = customerName;
