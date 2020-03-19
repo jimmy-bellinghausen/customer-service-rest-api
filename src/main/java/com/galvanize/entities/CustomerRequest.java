@@ -171,4 +171,19 @@ public class CustomerRequest {
     public int hashCode() {
         return Objects.hash(getRequestNumber(), getRequestDateTime(), getCustomerName(), getCustomerAddress(), getPhoneNumber(), getDescription(), getTechnician(), getAppointmentDateTime(), getStatus());
     }
+
+    @Override
+    public String toString() {
+        return "CustomerRequest{" +
+                "requestNumber=" + requestNumber +
+                ", requestDateTime=" + requestDateTime +
+                ", customerName='" + customerName + '\'' +
+                ", customerAddress='" + customerAddress + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", description='" + description + '\'' +
+                ", technician='" + technician + '\'' +
+                ", appointmentDateTime=" + appointmentDateTime.toLocalDateTime() +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

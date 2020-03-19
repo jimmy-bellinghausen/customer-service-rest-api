@@ -42,44 +42,9 @@ public class RestController {
     }
 
     @GetMapping("/api/service")
-    public String getAllCustomers() throws JsonProcessingException {
-        List<CustomerRequest> allRequests = jpaCustomerDao.findAll();
-        List<Note> allNotes = jpaNoteDao.findAll();
-        List<CustomerRequestWithNotes> returnList = new ArrayList<>();
-        for(CustomerRequest customerRequest : allRequests){
-            returnList.add(new CustomerRequestWithNotes(customerRequest));
-        }
-        for(Note note : allNotes){
-            int indexOfCustomerRequest = -1;
-            int lastIndex = allRequests.size()-1;
-            int firstIndex = 0;
-
-            while(indexOfCustomerRequest == -1) {
-                int middleIndex = (firstIndex+lastIndex)/2;
-                int expectedRequestNumber = note.getCustomerRequestNumber();
-                int requestNumber = allRequests.get(middleIndex).getRequestNumber();
-
-                if( requestNumber == expectedRequestNumber ){
-                    indexOfCustomerRequest = middleIndex;
-                }
-                else{
-                    if( requestNumber > expectedRequestNumber ){
-                        lastIndex = middleIndex - 1;
-                    }
-                    else{
-                        firstIndex = middleIndex + 1;
-                    }
-                }
-                if(firstIndex>lastIndex){
-                    break;
-                }
-            }
-
-            if(indexOfCustomerRequest!=-1){
-                returnList.get(indexOfCustomerRequest).addNote(note);
-            }
-        }
-
-        return objectMapper.writeValueAsString(returnList);
+    public List<CustomerRequest> getAllCustomers() throws JsonProcessingException {
+        return jpaCustomerDao.findAll();
     }
+
+
 }

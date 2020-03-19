@@ -1,5 +1,7 @@
 package com.galvanize.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galvanize.entities.CustomerRequest;
 import com.galvanize.entities.CustomerRequestWithNotes;
@@ -12,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Array;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -59,26 +62,25 @@ public class RestControllerTest {
         requestList.add(postCustomer(objectMapper.writeValueAsString(generateTestCustomer("2"))));
         requestList.add(postCustomer(objectMapper.writeValueAsString(generateTestCustomer("3"))));
 
-        List<Note> noteList = new ArrayList<>();
-        noteList.add(postNote(new Note("Test note.", requestList.get(0).getRequestNumber())));
-        noteList.add(postNote(new Note("This is also a test note.", requestList.get(0).getRequestNumber())));
-        noteList.add(postNote(new Note( "Test note.", requestList.get(1).getRequestNumber())));
-
-        List<CustomerRequestWithNotes> expectedList = new ArrayList<>();
-        for(CustomerRequest customerRequest : requestList){
-            expectedList.add(new CustomerRequestWithNotes(customerRequest));
-        }
-        expectedList.get(0).addNote(noteList.get(0));
-        expectedList.get(0).addNote(noteList.get(1));
-        expectedList.get(1).addNote(noteList.get(2));
-
         String listOfCustomerRequestsJSON = mvc.perform(get("/api/service"))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        assertEquals( objectMapper.writeValueAsString(expectedList), listOfCustomerRequestsJSON);
+        assertEquals( requestList, objectMapper.readValue(listOfCustomerRequestsJSON, new TypeReference<List<CustomerRequest>>() {
+        }));
+    }
+
+    @Test
+    public void getOneCustomerById() throws Exception {
+        CustomerRequest postedCustomer = postCustomer(objectMapper.writeValueAsString(generateTestCustomer("1")));
+        String receivedCustomerJSON = mvc.perform(get("/api/service/"+postedCustomer.getRequestNumber()))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+//        assertEquals(objectMapper.())
     }
 
     private CustomerRequest generateTestCustomer(String number){
