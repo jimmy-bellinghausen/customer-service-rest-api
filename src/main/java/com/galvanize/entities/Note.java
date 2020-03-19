@@ -14,9 +14,9 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "noteKey")
     private int noteKey;
-    @Column(name = "dateTime")
+    @Column(name = "timeOfNote")
     private Timestamp timeOfNote;
-    @Column(name = "note")
+    @Column(name = "noteDescription")
     private String noteDescription;
     @Column(name = "customerRequestNumber")
     private int customerRequestNumber;

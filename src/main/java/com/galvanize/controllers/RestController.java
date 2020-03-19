@@ -6,6 +6,7 @@ import com.galvanize.entities.CustomerRequest;
 import com.galvanize.entities.Note;
 import com.galvanize.repositories.JdbcCustomerDao;
 import com.galvanize.repositories.JpaCustomerDao;
+import com.galvanize.repositories.JpaNoteDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,8 @@ public class RestController {
 
     @Autowired
     JpaCustomerDao jpaCustomerDao;
+    @Autowired
+    JpaNoteDao jpaNoteDao;
 
     @Autowired
     JdbcCustomerDao jdbcCustomerDao;
@@ -31,9 +34,15 @@ public class RestController {
         return objectMapper.writeValueAsString(jpaCustomerDao.save(customerRequest));
     }
 
+    @PostMapping("/api/service/note")
+    public String postNote(@RequestBody Note note) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(jpaNoteDao.save(note));
+    }
+
     @GetMapping("/api/service")
     public List<CustomerRequest> getAllCustomers(){
         List<CustomerRequest> allRequests = jpaCustomerDao.findAll();
+        List<Note> allNotes = jpaNoteDao.findAll();
         return null;
     }
 }
