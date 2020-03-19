@@ -22,6 +22,7 @@ public class JpaCustomerDaoTest {
     public void testSave(){
         CustomerRequest customerRequest = new CustomerRequest(Timestamp.valueOf(LocalDateTime.now()), "Test Customer", "123 Some Address", "+1-234-567-890", "This is a test request.");
         CustomerRequest testSave = jpaCustomerDao.save(customerRequest);
+
         assertEquals(1, testSave.getRequestNumber());
     }
 
@@ -35,6 +36,7 @@ public class JpaCustomerDaoTest {
         jpaCustomerDao.save(customerRequest3);
         List<CustomerRequest> requests = jpaCustomerDao.findAll();
         System.out.println(requests.toString());
+
         assertEquals(3, requests.size());
     }
 }

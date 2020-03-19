@@ -13,8 +13,8 @@ CREATE TABLE customerRequests (
 );
 DROP TABLE IF EXISTS notes;
 CREATE TABLE notes (
-    noteKey           INTEGER NOT NULL default '0' AUTO_INCREMENT,
-    customerRequestNumber INTEGER NOT NULL default '0',
+    noteKey           INT NOT NULL AUTO_INCREMENT,
+    customerRequestNumber INT NOT NULL,
     dateTime TIMESTAMP NOT NULL default CURRENT_TIMESTAMP,
     note   VARCHAR(200) NOT NULL,
     PRIMARY KEY (noteKey)
