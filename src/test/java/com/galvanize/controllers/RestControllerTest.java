@@ -57,6 +57,7 @@ public class RestControllerTest {
         List<CustomerRequest> requestList= new ArrayList<>();
         requestList.add(postCustomer(objectMapper.writeValueAsString(generateTestCustomer("1"))));
         requestList.add(postCustomer(objectMapper.writeValueAsString(generateTestCustomer("2"))));
+        requestList.add(postCustomer(objectMapper.writeValueAsString(generateTestCustomer("3"))));
 
         List<Note> noteList = new ArrayList<>();
         noteList.add(postNote(new Note("Test note.", requestList.get(0).getRequestNumber())));
@@ -64,8 +65,9 @@ public class RestControllerTest {
         noteList.add(postNote(new Note( "Test note.", requestList.get(1).getRequestNumber())));
 
         List<CustomerRequestWithNotes> expectedList = new ArrayList<>();
-        expectedList.add(new CustomerRequestWithNotes(requestList.get(0)));
-        expectedList.add(new CustomerRequestWithNotes(requestList.get(1)));
+        for(CustomerRequest customerRequest : requestList){
+            expectedList.add(new CustomerRequestWithNotes(customerRequest));
+        }
         expectedList.get(0).addNote(noteList.get(0));
         expectedList.get(0).addNote(noteList.get(1));
         expectedList.get(1).addNote(noteList.get(2));
