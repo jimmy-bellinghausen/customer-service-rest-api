@@ -1,9 +1,7 @@
 package com.galvanize.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -13,29 +11,34 @@ import java.util.Objects;
 public class Note {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "noteKey")
-    int noteKey;
+    private int noteKey;
     @Column(name = "dateTime")
-    Timestamp timeOfNote;
+    private Timestamp timeOfNote;
     @Column(name = "note")
-    String noteDescription;
+    private String noteDescription;
     @Column(name = "customerRequestNumber")
-    int customerRequestNumber;
+    private int customerRequestNumber;
 
     public Note(){};
 
     public Note(String noteDescription, int customerRequestNumber) {
-        this(Timestamp.valueOf(LocalDateTime.now()), noteDescription, customerRequestNumber);
+        this.timeOfNote = Timestamp.valueOf(LocalDateTime.now());
+        this.noteDescription = noteDescription;
+        this.customerRequestNumber = customerRequestNumber;
     }
 
-    public Note(Timestamp timeOfNote, String noteDescription, int customerRequestNumber) {
+    public Note(String noteDescription, int customerRequestNumber, Timestamp timeOfNote) {
         this.timeOfNote = timeOfNote;
         this.noteDescription = noteDescription;
         this.customerRequestNumber = customerRequestNumber;
     }
 
-    public Note(int noteKey,Timestamp timeOfNote, String noteDescription, int customerRequestNumber) {
-        this(timeOfNote, noteDescription, customerRequestNumber);
+    public Note(String noteDescription, int customerRequestNumber, Timestamp timeOfNote, int noteKey) {
+        this.timeOfNote = timeOfNote;
+        this.noteDescription = noteDescription;
+        this.customerRequestNumber = customerRequestNumber;
         this.noteKey = noteKey;
     }
 
