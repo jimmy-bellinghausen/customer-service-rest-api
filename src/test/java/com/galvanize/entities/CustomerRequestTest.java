@@ -28,4 +28,19 @@ public class CustomerRequestTest {
 
         assertEquals(expectedRequest, actualRequest);
     }
+
+    @Test
+    public void updateTest(){
+        CustomerRequest actualRequest = new CustomerRequest();
+        CustomerRequest expectedRequest = new CustomerRequest();
+
+        expectedRequest.setTechnician("Test technician.");
+        expectedRequest.setAppointmentDateTime(Timestamp.valueOf(LocalDateTime.now()));
+        expectedRequest.setPhoneNumber("123455123");
+        expectedRequest.setStatus("RESOLVED");
+        actualRequest.update(expectedRequest);
+
+
+        assertEquals(expectedRequest, actualRequest);
+    }
 }

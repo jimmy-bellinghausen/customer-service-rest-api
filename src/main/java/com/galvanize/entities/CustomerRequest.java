@@ -191,4 +191,15 @@ public class CustomerRequest {
         this.setTechnician(updatingRequest.getTechnician());
         this.setAppointmentDateTime(updatingRequest.getAppointmentDateTime());
     }
+
+    public void update(CustomerRequest that) {
+        if(that.getTechnician()!=null){this.setTechnician(that.getTechnician());}
+        if(that.getRequestNumber()!=0){this.setRequestNumber(that.getRequestNumber());}
+        if(that.getAppointmentDateTime()!=null){this.setAppointmentDateTime(that.getAppointmentDateTime());}
+        if(that.getCustomerAddress()!=null){this.setCustomerAddress(that.getCustomerAddress());}
+        if(that.getCustomerName()!=null){this.setCustomerName(that.getCustomerName());}
+        if(that.getDescription()!=null){this.setDescription(that.getDescription());}
+        if(that.getStatus()!=null){this.setStatus(that.getStatus());}
+        if(that.getPhoneNumber()!=null){this.setPhoneNumber(that.getPhoneNumber());}
+    }
 }
