@@ -172,21 +172,6 @@ public class CustomerRequest {
         return Objects.hash(getRequestNumber(), getRequestDateTime(), getCustomerName(), getCustomerAddress(), getPhoneNumber(), getDescription(), getTechnician(), getAppointmentDateTime(), getStatus());
     }
 
-    @Override
-    public String toString() {
-        return "CustomerRequest{" +
-                "requestNumber=" + requestNumber +
-                ", requestDateTime=" + requestDateTime +
-                ", customerName='" + customerName + '\'' +
-                ", customerAddress='" + customerAddress + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", description='" + description + '\'' +
-                ", technician='" + technician + '\'' +
-                ", appointmentDateTime=" + appointmentDateTime.toLocalDateTime() +
-                ", status='" + status + '\'' +
-                '}';
-    }
-
     public void assignTechnician(CustomerRequest updatingRequest){
         this.setTechnician(updatingRequest.getTechnician());
         this.setAppointmentDateTime(updatingRequest.getAppointmentDateTime());

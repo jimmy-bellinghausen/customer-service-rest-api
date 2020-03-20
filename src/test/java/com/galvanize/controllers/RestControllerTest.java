@@ -112,16 +112,20 @@ public class RestControllerTest {
         assertEquals(testRequest, objectMapper.readValue(actualJSON, CustomerRequest.class));
     }
 
-//    @Test
-//    public void updateStatus() throws Exception {
-//        CustomerRequest testRequest = postCustomer(generateTestCustomer("1"));
-//        CustomerRequestWithNotes updatingRequest = new CustomerRequestWithNotes(testRequest);
-//        updatingRequest.setTechnician("Bob Builder");
-//        updatingRequest.setAppointmentDateTime(Timestamp.valueOf(LocalDateTime.now()));
-//
-//
-//        assertEquals(testRequest, objectMapper.readValue(actualJSON, CustomerRequest.class));
-//    }
+    @Test
+    public void updateStatus() throws Exception {
+        CustomerRequest testRequest = postCustomer(generateTestCustomer("1"));
+        CustomerRequestWithNotes updatingRequest = new CustomerRequestWithNotes(testRequest);
+        updatingRequest.setTechnician("Bob Builder");
+        updatingRequest.setAppointmentDateTime(Timestamp.valueOf(LocalDateTime.now()));
+        List<Note> noteList = new ArrayList<>();
+        noteList.add(postNote(new Note("Test desciption", testRequest.getRequestNumber())));
+        updatingRequest.setNotes(noteList);
+
+        mvc.perform(put("/api/service/"+testRequest.getRequestNumber()+"/status")
+                .content(objectMapper.writeValueAsString(updatingRequest)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 
 
     //HELPER FUNCTIONS

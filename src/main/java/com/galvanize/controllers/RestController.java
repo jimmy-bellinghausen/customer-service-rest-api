@@ -59,12 +59,12 @@ public class RestController {
     }
 
     @PutMapping("/api/service/{requestNumber}/status")
-    public CustomerRequestWithNotes updateStatus(@PathVariable int requestNumber, @RequestBody CustomerRequestWithNotes customerRequestWithNotes){
+    public void updateStatus(@PathVariable int requestNumber, @RequestBody CustomerRequestWithNotes customerRequestWithNotes){
         for(Note note : customerRequestWithNotes.getNotes()){
             jpaNoteDao.save(note);
         }
         CustomerRequest customerRequestToUpdate = jpaCustomerDao.findByRequestNumber(requestNumber);
         customerRequestToUpdate.update(customerRequestWithNotes);
-        return null;
+        jpaCustomerDao.save(customerRequestToUpdate);
     }
 }
