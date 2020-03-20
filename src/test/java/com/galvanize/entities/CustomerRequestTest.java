@@ -6,6 +6,7 @@ import org.mockito.internal.verification.Times;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,5 +17,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 public class CustomerRequestTest {
+    @Test
+    public void assignTechnician(){
+        CustomerRequest actualRequest = new CustomerRequest();
+        CustomerRequest expectedRequest = new CustomerRequest();
 
+        expectedRequest.setTechnician("Test technician.");
+        expectedRequest.setAppointmentDateTime(Timestamp.valueOf(LocalDateTime.now()));
+        actualRequest.assignTechnician(expectedRequest);
+
+        assertEquals(expectedRequest, actualRequest);
+    }
 }

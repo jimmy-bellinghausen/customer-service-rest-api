@@ -9,10 +9,7 @@ import com.galvanize.repositories.JdbcCustomerDao;
 import com.galvanize.repositories.JpaCustomerDao;
 import com.galvanize.repositories.JpaNoteDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -51,6 +48,13 @@ public class RestController {
     public  CustomerRequestWithNotes getCustomerById(@PathVariable int id) throws JsonProcessingException{
         CustomerRequestWithNotes returnRequest = new CustomerRequestWithNotes(jpaCustomerDao.findByRequestNumber(id));
         returnRequest.setNotes( jpaNoteDao.findAllByCustomerRequestNumber(id) );
+        return returnRequest;
+    }
+
+    @PutMapping("/api/service/{requestNumber}")
+    public CustomerRequest assignTechnician(@PathVariable int requestNumber, @RequestBody CustomerRequest technicianToAssign){
+//        jpaCustomerDao.assignTechnicianByRequestNumber(requestNumber, technicianToAssign);
+        CustomerRequest returnRequest = jpaCustomerDao.findByRequestNumber(requestNumber);
         return returnRequest;
     }
 }

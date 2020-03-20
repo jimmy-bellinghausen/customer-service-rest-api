@@ -186,4 +186,9 @@ public class CustomerRequest {
                 ", status='" + status + '\'' +
                 '}';
     }
+
+    public void assignTechnician(CustomerRequest updatingRequest){
+        this.setTechnician(updatingRequest.getTechnician());
+        this.setAppointmentDateTime(updatingRequest.getAppointmentDateTime());
+    }
 }
