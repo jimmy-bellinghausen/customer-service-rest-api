@@ -7,6 +7,7 @@ import com.galvanize.entities.CustomerRequest;
 import com.galvanize.entities.CustomerRequestWithNotes;
 import com.galvanize.entities.Note;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -68,19 +70,26 @@ public class RestControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        assertEquals( requestList, objectMapper.readValue(listOfCustomerRequestsJSON, new TypeReference<List<CustomerRequest>>() {
-        }));
+        assertEquals( requestList, objectMapper.readValue(listOfCustomerRequestsJSON, new TypeReference<List<CustomerRequest>>(){}));
     }
 
     @Test
     public void getOneCustomerById() throws Exception {
         CustomerRequest postedCustomer = postCustomer(objectMapper.writeValueAsString(generateTestCustomer("1")));
+        Note testNote1 = new Note("Test Note 1.", postedCustomer.getRequestNumber());
+        Note testNote2 = new Note("Test Note 2.", postedCustomer.getRequestNumber());
+
+        CustomerRequestWithNotes expectedReturn = new CustomerRequestWithNotes(postedCustomer);
+        expectedReturn.addNote(postNote(testNote1));
+        expectedReturn.addNote(postNote(testNote2));
+
         String receivedCustomerJSON = mvc.perform(get("/api/service/"+postedCustomer.getRequestNumber()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-//        assertEquals(objectMapper.())
+
+        assertTrue( receivedCustomerJSON.contains("Test Note 1.") );
     }
 
     private CustomerRequest generateTestCustomer(String number){

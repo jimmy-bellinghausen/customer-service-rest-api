@@ -10,6 +10,7 @@ import com.galvanize.repositories.JpaCustomerDao;
 import com.galvanize.repositories.JpaNoteDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -32,13 +33,13 @@ public class RestController {
     JdbcCustomerDao jdbcCustomerDao;
 
     @PostMapping("/api/service")
-    public String postCustomerRequest(@RequestBody CustomerRequest customerRequest) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(jpaCustomerDao.save(customerRequest));
+    public CustomerRequest postCustomerRequest(@RequestBody CustomerRequest customerRequest) throws JsonProcessingException {
+        return jpaCustomerDao.save(customerRequest);
     }
 
     @PostMapping("/api/service/note")
-    public String postNote(@RequestBody Note note) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(jpaNoteDao.save(note));
+    public Note postNote(@RequestBody Note note) throws JsonProcessingException {
+        return jpaNoteDao.save(note);
     }
 
     @GetMapping("/api/service")
@@ -46,5 +47,10 @@ public class RestController {
         return jpaCustomerDao.findAll();
     }
 
-
+    @GetMapping("/api/service/{id}")
+    public  CustomerRequestWithNotes getCustomerById(@PathVariable int id) throws JsonProcessingException{
+        CustomerRequestWithNotes returnRequest = new CustomerRequestWithNotes(jpaCustomerDao.findByRequestNumber(id));
+        returnRequest.setNotes( jpaNoteDao.findAllByCustomerRequestNumber(id) );
+        return returnRequest;
+    }
 }
