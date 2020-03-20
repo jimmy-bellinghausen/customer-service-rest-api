@@ -122,9 +122,14 @@ public class RestControllerTest {
         noteList.add(postNote(new Note("Test desciption", testRequest.getRequestNumber())));
         updatingRequest.setNotes(noteList);
 
-        mvc.perform(put("/api/service/"+testRequest.getRequestNumber()+"/status")
+        String returnedJSON = mvc.perform(put("/api/service/"+testRequest.getRequestNumber()+"/status")
                 .content(objectMapper.writeValueAsString(updatingRequest)).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertEquals(updatingRequest, objectMapper.readValue(returnedJSON, CustomerRequestWithNotes.class));
     }
 
 

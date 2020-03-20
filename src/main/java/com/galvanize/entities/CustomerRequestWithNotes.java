@@ -7,6 +7,8 @@ import java.util.List;
 public class CustomerRequestWithNotes extends CustomerRequest {
     private List<Note> Notes;
 
+    public CustomerRequestWithNotes(){}
+
     public CustomerRequestWithNotes(CustomerRequest customerRequest){
         super(customerRequest);
         Notes = new ArrayList<>();
