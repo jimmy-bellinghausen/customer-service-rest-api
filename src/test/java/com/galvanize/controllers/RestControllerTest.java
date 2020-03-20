@@ -112,6 +112,17 @@ public class RestControllerTest {
         assertEquals(testRequest, objectMapper.readValue(actualJSON, CustomerRequest.class));
     }
 
+//    @Test
+//    public void updateStatus() throws Exception {
+//        CustomerRequest testRequest = postCustomer(generateTestCustomer("1"));
+//        CustomerRequestWithNotes updatingRequest = new CustomerRequestWithNotes(testRequest);
+//        updatingRequest.setTechnician("Bob Builder");
+//        updatingRequest.setAppointmentDateTime(Timestamp.valueOf(LocalDateTime.now()));
+//
+//
+//        assertEquals(testRequest, objectMapper.readValue(actualJSON, CustomerRequest.class));
+//    }
+
 
     //HELPER FUNCTIONS
 

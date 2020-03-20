@@ -55,6 +55,14 @@ public class RestController {
     public CustomerRequest assignTechnician(@PathVariable int requestNumber, @RequestBody CustomerRequest technicianToAssign){
         CustomerRequest returnRequest = jpaCustomerDao.findByRequestNumber(requestNumber);
         returnRequest.assignTechnician(technicianToAssign);
-        return returnRequest;
+        return jpaCustomerDao.save(returnRequest);
     }
+
+//    @PutMapping("/api/service/{requestNumber}/status")
+//    public CustomerRequestWithNotes updateStatus(@PathVariable int requestNumber, @RequestBody CustomerRequestWithNotes customerRequestWithNotes){
+//        for(Note note : customerRequestWithNotes.getNotes()){
+//            jpaNoteDao.save(note);
+//        }
+//        CustomerRequest customerRequestToUpdate()
+//    }
 }
