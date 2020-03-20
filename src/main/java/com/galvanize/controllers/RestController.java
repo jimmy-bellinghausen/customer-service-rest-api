@@ -53,8 +53,8 @@ public class RestController {
 
     @PutMapping("/api/service/{requestNumber}")
     public CustomerRequest assignTechnician(@PathVariable int requestNumber, @RequestBody CustomerRequest technicianToAssign){
-//        jpaCustomerDao.assignTechnicianByRequestNumber(requestNumber, technicianToAssign);
         CustomerRequest returnRequest = jpaCustomerDao.findByRequestNumber(requestNumber);
+        returnRequest.assignTechnician(technicianToAssign);
         return returnRequest;
     }
 }
