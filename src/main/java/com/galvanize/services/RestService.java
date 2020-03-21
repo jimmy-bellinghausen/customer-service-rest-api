@@ -23,7 +23,7 @@ public class RestService {
     @Autowired
     JpaNoteDao jpaNoteDao;
 
-    public CustomerRequestWithNotes getCustomerById( int id) throws JsonProcessingException{
+    public CustomerRequestWithNotes getCustomerById( int id) {
         CustomerRequestWithNotes returnRequest = new CustomerRequestWithNotes(jpaCustomerDao.findByRequestNumber(id));
         returnRequest.setNotes( jpaNoteDao.findAllByCustomerRequestNumber(id) );
         return returnRequest;

@@ -9,9 +9,11 @@ import com.galvanize.repositories.JdbcCustomerDao;
 import com.galvanize.repositories.JpaCustomerDao;
 import com.galvanize.repositories.JpaNoteDao;
 import com.galvanize.services.RestService;
+import jdk.nashorn.internal.objects.NativeEvalError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.NamingException;
 import javax.validation.constraints.Null;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -28,37 +30,25 @@ public class RestController {
     JpaNoteDao jpaNoteDao;
 
     @PostMapping("/api/service")
-    public CustomerRequest postCustomerRequest(@RequestBody CustomerRequest customerRequest) throws JsonProcessingException {
-       try{
-            return jpaCustomerDao.save(customerRequest);
-        }catch (Exception e){
-            return null;
-        }
+    public CustomerRequest postCustomerRequest(@RequestBody CustomerRequest customerRequest)  {
+        return jpaCustomerDao.save(customerRequest);
     }
 
     @PostMapping("/api/service/note")
     public Note postNote(@RequestBody Note note) {
-        try {
-            return jpaNoteDao.save(note);
-        }catch (Exception e){
-            return null;
-        }
+        return jpaNoteDao.save(note);
     }
 
     @GetMapping("/api/service")
     public List<CustomerRequest> getAllCustomers() {
-        try{
-            return jpaCustomerDao.findAll();
-        }catch(Exception e){
-            return null;
-        }
+        return jpaCustomerDao.findAll();
     }
 
     @GetMapping("/api/service/{id}")
     public CustomerRequestWithNotes getCustomerById(@PathVariable int id){
         try{
             return restService.getCustomerById(id);
-        }catch (Exception e){
+        }catch (NullPointerException e){
             return null;
         }
     }
@@ -67,7 +57,7 @@ public class RestController {
     public CustomerRequest assignTechnician(@PathVariable int requestNumber, @RequestBody CustomerRequest technicianToAssign){
         try{
             return restService.assignTechnician(requestNumber, technicianToAssign);
-        }catch (Exception e){
+        }catch (NullPointerException e){
             return null;
         }
     }
@@ -75,7 +65,7 @@ public class RestController {
     public CustomerRequestWithNotes updateStatus(@PathVariable int requestNumber, @RequestBody CustomerRequestWithNotes customerRequestWithNotes){
         try{
             return restService.updateStatus(requestNumber, customerRequestWithNotes);
-        }catch (Exception e){
+        }catch (NullPointerException e){
             return null;
         }
     }
