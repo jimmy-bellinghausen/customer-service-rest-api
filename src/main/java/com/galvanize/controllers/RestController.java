@@ -8,9 +8,11 @@ import com.galvanize.entities.Note;
 import com.galvanize.repositories.JdbcCustomerDao;
 import com.galvanize.repositories.JpaCustomerDao;
 import com.galvanize.repositories.JpaNoteDao;
+import com.galvanize.services.RestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Null;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,56 +20,63 @@ import java.util.List;
 
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
-
-    ObjectMapper objectMapper = new ObjectMapper();
-
     @Autowired
     JpaCustomerDao jpaCustomerDao;
     @Autowired
-    JpaNoteDao jpaNoteDao;
-
+    RestService restService;
     @Autowired
-    JdbcCustomerDao jdbcCustomerDao;
+    JpaNoteDao jpaNoteDao;
 
     @PostMapping("/api/service")
     public CustomerRequest postCustomerRequest(@RequestBody CustomerRequest customerRequest) throws JsonProcessingException {
-        return jpaCustomerDao.save(customerRequest);
+       try{
+            return jpaCustomerDao.save(customerRequest);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     @PostMapping("/api/service/note")
-    public Note postNote(@RequestBody Note note) throws JsonProcessingException {
-        return jpaNoteDao.save(note);
+    public Note postNote(@RequestBody Note note) {
+        try {
+            return jpaNoteDao.save(note);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     @GetMapping("/api/service")
-    public List<CustomerRequest> getAllCustomers() throws JsonProcessingException {
-        return jpaCustomerDao.findAll();
+    public List<CustomerRequest> getAllCustomers() {
+        try{
+            return jpaCustomerDao.findAll();
+        }catch(Exception e){
+            return null;
+        }
     }
 
     @GetMapping("/api/service/{id}")
-    public  CustomerRequestWithNotes getCustomerById(@PathVariable int id) throws JsonProcessingException{
-        CustomerRequestWithNotes returnRequest = new CustomerRequestWithNotes(jpaCustomerDao.findByRequestNumber(id));
-        returnRequest.setNotes( jpaNoteDao.findAllByCustomerRequestNumber(id) );
-        return returnRequest;
+    public CustomerRequestWithNotes getCustomerById(@PathVariable int id){
+        try{
+            return restService.getCustomerById(id);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     @PutMapping("/api/service/{requestNumber}")
     public CustomerRequest assignTechnician(@PathVariable int requestNumber, @RequestBody CustomerRequest technicianToAssign){
-        CustomerRequest returnRequest = jpaCustomerDao.findByRequestNumber(requestNumber);
-        returnRequest.assignTechnician(technicianToAssign);
-        return jpaCustomerDao.save(returnRequest);
+        try{
+            return restService.assignTechnician(requestNumber, technicianToAssign);
+        }catch (Exception e){
+            return null;
+        }
     }
-
     @PutMapping("/api/service/{requestNumber}/status")
     public CustomerRequestWithNotes updateStatus(@PathVariable int requestNumber, @RequestBody CustomerRequestWithNotes customerRequestWithNotes){
-        for(Note note : customerRequestWithNotes.getNotes()){
-            jpaNoteDao.save(note);
+        try{
+            return restService.updateStatus(requestNumber, customerRequestWithNotes);
+        }catch (Exception e){
+            return null;
         }
-        CustomerRequest customerRequestToUpdate = jpaCustomerDao.findByRequestNumber(requestNumber);
-        customerRequestToUpdate.update(customerRequestWithNotes);
-        jpaCustomerDao.save(customerRequestToUpdate);
-        CustomerRequestWithNotes returnRequest = new CustomerRequestWithNotes(customerRequestToUpdate);
-        returnRequest.setNotes(customerRequestWithNotes.getNotes());
-        return returnRequest;
     }
 }

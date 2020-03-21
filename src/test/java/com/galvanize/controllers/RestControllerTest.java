@@ -20,10 +20,10 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -74,6 +74,16 @@ public class RestControllerTest {
     }
 
     @Test
+    public void failToGetAllCustomerRequests() throws Exception{
+        String listOfCustomerRequestsJSON = mvc.perform(get("/api/service"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        assertEquals("[]", listOfCustomerRequestsJSON);
+    }
+
+    @Test
     public void getOneCustomerById() throws Exception {
         CustomerRequest postedCustomer = postCustomer(generateTestCustomer("1"));
         Note testNote1 = new Note("Test Note 1.", postedCustomer.getRequestNumber());
@@ -90,6 +100,16 @@ public class RestControllerTest {
                 .getContentAsString();
 
         assertTrue( receivedCustomerJSON.contains("Test Note 1.") );
+    }
+
+    @Test
+    public void failToGetRequest() throws Exception {
+        String receivedCustomerJSON = mvc.perform(get("/api/service/1"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        assertEquals("", receivedCustomerJSON);
     }
 
     @Test
@@ -113,6 +133,23 @@ public class RestControllerTest {
     }
 
     @Test
+    public void failToAssignTechnician() throws Exception{
+        CustomerRequest emptyTechnicianToAdd = new CustomerRequest();
+        emptyTechnicianToAdd.setTechnician("Bob Builder");
+        emptyTechnicianToAdd.setAppointmentDateTime(Timestamp.valueOf(LocalDateTime.now()));
+        String actualJSON = mvc.perform(put("/api/service/1")
+                .content(objectMapper.writeValueAsString(emptyTechnicianToAdd)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertEquals("", actualJSON);
+    }
+
+
+
+    @Test
     public void updateStatus() throws Exception {
         CustomerRequest testRequest = postCustomer(generateTestCustomer("1"));
         CustomerRequestWithNotes updatingRequest = new CustomerRequestWithNotes(testRequest);
@@ -130,6 +167,22 @@ public class RestControllerTest {
                 .getContentAsString();
 
         assertEquals(updatingRequest, objectMapper.readValue(returnedJSON, CustomerRequestWithNotes.class));
+    }
+
+    @Test
+    public void failToUpdateStatus() throws Exception{
+        CustomerRequestWithNotes updatingRequest = new CustomerRequestWithNotes();
+        updatingRequest.setTechnician("Bob Builder");
+        updatingRequest.setAppointmentDateTime(Timestamp.valueOf(LocalDateTime.now()));
+
+        String returnedJSON = mvc.perform(put("/api/service/1/status")
+                .content(objectMapper.writeValueAsString(updatingRequest)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertEquals("", returnedJSON);
     }
 
 
